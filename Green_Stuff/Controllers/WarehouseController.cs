@@ -16,8 +16,8 @@ namespace Green_Stuff.Controllers
         // GET: WarehouseController
         public ActionResult Index()
         {
-            List<Warehouse> listwarehouse = _DBContext.Warehouses.Include(s => s.oSizes).Include(s => s.oExpositionToSun)
-                .Include(s => s.oWaterDemmand).Include(s => s.oCategories).ToList();
+            List<Warehouse> listwarehouse = _DBContext.Warehouses.Include(o => o.oSizes)
+                .Include(o => o.oExpositionToSun).Include(o => o.oWaterDemmand).Include(o => o.oCategories).ToList();
             return View(listwarehouse);
         }
 
