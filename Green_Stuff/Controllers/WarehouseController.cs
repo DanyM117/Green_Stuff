@@ -1,4 +1,5 @@
 ﻿using Green_Stuff.Models;
+using Green_Stuff.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,9 +23,52 @@ namespace Green_Stuff.Controllers
         }
 
         // GET: WarehouseController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public ActionResult Warehouse_Detail(int IdItem)
         {
-            return View();
+            WarehouseVM oWarehouseVM = new WarehouseVM()
+            {
+                oWarehouse = new Warehouse(),
+                oSizesList = _DBContext.Sizes.Select(sizes => new SelectListItem()
+                {
+                    Text = sizes.Name,
+                    Value = sizes.IdSize.ToString()
+                }).ToList(),
+                oExpositionToSunList = _DBContext.ExpositionToSuns.Select(sun => new SelectListItem()
+                {
+                    Text = sun.Name,
+                    Value = sun.IdSun.ToString()
+                }).ToList(),
+                oWaterDemmandList = _DBContext.WaterDemmands.Select(water => new SelectListItem()
+                {
+                    Text = water.Name,
+                    Value = water.IdWater.ToString()
+                }).ToList(),
+                oCategoriesList = _DBContext.Categories.Select(categories => new SelectListItem()
+                {
+                    Text = categories.Name,
+                    Value = categories.IdCategory.ToString()
+                }).ToList()
+            };
+            if(IdItem != 0)
+            {
+                oWarehouseVM.oWarehouse = _DBContext.Warehouses.Find(IdItem);
+            }
+            return View(oWarehouseVM);
+        }
+        [HttpPost]
+        public ActionResult Warehouse_Detail(WarehouseVM oWarehouseVM)
+        {
+            if(oWarehouseVM.oWarehouse.IdItem == 0)
+            {
+                _DBContext.Warehouses.Add(oWarehouseVM.oWarehouse);
+            }
+            else
+            {
+                _DBContext.Warehouses.Update(oWarehouseVM.oWarehouse);
+            }
+            _DBContext.SaveChanges();
+            return RedirectToAction("Index","Warehouse");
         }
 
         // GET: WarehouseController/Create
@@ -68,21 +112,25 @@ namespace Green_Stuff.Controllers
                 return View();
             }
         }
-
+        [HttpGet]
         // GET: WarehouseController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int IdItem)
         {
-            return View();
+            Warehouse oWarehouse = _DBContext.Warehouses.Include(o => o.oSizes)
+                .Include(o => o.oExpositionToSun).Include(o => o.oWaterDemmand).Include(o => o.oCategories).Where(x => x.IdItem == IdItem).FirstOrDefault();
+            return View(oWarehouse);
         }
 
         // POST: WarehouseController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Warehouse oWarehouse)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _DBContext.Warehouses.Remove(oWarehouse);
+                _DBContext.SaveChanges();
+                return RedirectToAction("Index","Warehouse");
             }
             catch
             {
