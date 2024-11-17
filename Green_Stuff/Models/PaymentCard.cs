@@ -15,7 +15,7 @@ public partial class PaymentCard
 
     public short Cvv { get; set; }
 
-    public virtual User IduserNavigation { get; set; } = null!;
+    public virtual User oUsers { get; set; } = null!;
 
-    public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
+    public virtual ICollection<Sale> oSales { get; set; } = new List<Sale>();
 }

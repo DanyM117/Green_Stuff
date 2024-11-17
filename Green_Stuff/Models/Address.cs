@@ -15,5 +15,5 @@ public partial class Address
 
     public bool Enabled { get; set; }
 
-    public virtual User IduserNavigation { get; set; } = null!;
+    public virtual User oUsers { get; set; } = null!;
 }

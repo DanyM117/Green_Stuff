@@ -61,7 +61,7 @@ public partial class DbLabpwebContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("Name_");
 
-            entity.HasOne(d => d.IduserNavigation).WithMany(p => p.Addresses)
+            entity.HasOne(d => d.oUsers).WithMany(p => p.oAddresses)
                 .HasForeignKey(d => d.Iduser)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Addresses__IDUse__4336F4B9");
@@ -84,7 +84,7 @@ public partial class DbLabpwebContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.IduserNavigation).WithMany(p => p.Advertisements)
+            entity.HasOne(d => d.oUsers).WithMany(p => p.oAdvertisements)
                 .HasForeignKey(d => d.Iduser)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Advertise__IDUse__61BB7BD9");
@@ -143,7 +143,7 @@ public partial class DbLabpwebContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.IduserNavigation).WithMany(p => p.PaymentCards)
+            entity.HasOne(d => d.oUsers).WithMany(p => p.oPaymentCards)
                 .HasForeignKey(d => d.Iduser)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Payment_C__IDUse__405A880E");
@@ -160,12 +160,12 @@ public partial class DbLabpwebContext : DbContext
             entity.Property(e => e.TotalAmmount).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.TotalQuantity).HasColumnType("decimal(10, 2)");
 
-            entity.HasOne(d => d.IdcardNavigation).WithMany(p => p.Sales)
+            entity.HasOne(d => d.IdcardNavigation).WithMany(p => p.oSales)
                 .HasForeignKey(d => d.Idcard)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Sales__IDCard__47FBA9D6");
 
-            entity.HasOne(d => d.IduserNavigation).WithMany(p => p.Sales)
+            entity.HasOne(d => d.IduserNavigation).WithMany(p => p.oSales)
                 .HasForeignKey(d => d.Iduser)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Sales__IDUser__4707859D");
@@ -183,12 +183,12 @@ public partial class DbLabpwebContext : DbContext
             entity.Property(e => e.Subtotal).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.UnitPrice).HasColumnType("decimal(10, 2)");
 
-            entity.HasOne(d => d.IditemNavigation).WithMany(p => p.oSaleDetails)
+            entity.HasOne(d => d.oWarehouses).WithMany(p => p.oSaleDetails)
                 .HasForeignKey(d => d.Iditem)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Sale_Deta__IDIte__4BCC3ABA");
 
-            entity.HasOne(d => d.IdsaleNavigation).WithMany(p => p.SaleDetails)
+            entity.HasOne(d => d.oSales).WithMany(p => p.oSaleDetails)
                 .HasForeignKey(d => d.Idsale)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Sale_Deta__IDSal__4AD81681");
@@ -239,7 +239,7 @@ public partial class DbLabpwebContext : DbContext
                 .HasMaxLength(30)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.IduserTypeNavigation).WithMany(p => p.Users)
+            entity.HasOne(d => d.oUserTypes).WithMany(p => p.oUsers)
                 .HasForeignKey(d => d.IduserType)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Users__IDUserTyp__3D7E1B63");
@@ -286,7 +286,7 @@ public partial class DbLabpwebContext : DbContext
                 .HasColumnName("Name_");
             entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
 
-            entity.HasOne(d => d.oCategories).WithMany(p => p.Warehouses)
+            entity.HasOne(d => d.oCategories).WithMany(p => p.oWarehouses)
                 .HasForeignKey(d => d.Idcategory)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Warehouse__IDCat__37C5420D");
@@ -296,11 +296,11 @@ public partial class DbLabpwebContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Warehouse__IDSiz__34E8D562");
 
-            entity.HasOne(d => d.oExpositionToSun).WithMany(p => p.Warehouses)
+            entity.HasOne(d => d.oExpositionToSun).WithMany(p => p.oWarehouses)
                 .HasForeignKey(d => d.Idsun)
                 .HasConstraintName("FK__Warehouse__IDSun__35DCF99B");
 
-            entity.HasOne(d => d.oWaterDemmand).WithMany(p => p.Warehouses)
+            entity.HasOne(d => d.oWaterDemmand).WithMany(p => p.oWarehouses)
                 .HasForeignKey(d => d.Idwater)
                 .HasConstraintName("FK__Warehouse__IDWat__36D11DD4");
         });

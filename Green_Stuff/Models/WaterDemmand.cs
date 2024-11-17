@@ -15,5 +15,5 @@ public partial class WaterDemmand
 
     public bool Enabled { get; set; }
 
-    public virtual ICollection<Warehouse> Warehouses { get; set; } = new List<Warehouse>();
+    public virtual ICollection<Warehouse> oWarehouses { get; set; } = new List<Warehouse>();
 }

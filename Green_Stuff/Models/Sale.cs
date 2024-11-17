@@ -21,5 +21,5 @@ public partial class Sale
 
     public virtual User IduserNavigation { get; set; } = null!;
 
-    public virtual ICollection<SaleDetail> SaleDetails { get; set; } = new List<SaleDetail>();
+    public virtual ICollection<SaleDetail> oSaleDetails { get; set; } = new List<SaleDetail>();
 }

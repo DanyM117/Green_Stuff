@@ -17,7 +17,7 @@ public partial class SaleDetail
 
     public DateTime ModificationDate { get; set; }
 
-    public virtual Warehouse IditemNavigation { get; set; } = null!;
+    public virtual Warehouse oWarehouses { get; set; } = null!;
 
-    public virtual Sale IdsaleNavigation { get; set; } = null!;
+    public virtual Sale oSales { get; set; } = null!;
 }

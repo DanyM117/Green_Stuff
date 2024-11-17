@@ -21,13 +21,13 @@ public partial class User
 
     public string? ImagePath { get; set; }
 
-    public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
+    public virtual ICollection<Address> oAddresses { get; set; } = new List<Address>();
 
-    public virtual ICollection<Advertisement> Advertisements { get; set; } = new List<Advertisement>();
+    public virtual ICollection<Advertisement> oAdvertisements { get; set; } = new List<Advertisement>();
 
-    public virtual UserType IduserTypeNavigation { get; set; } = null!;
+    public virtual UserType oUserTypes { get; set; } = null!;
 
-    public virtual ICollection<PaymentCard> PaymentCards { get; set; } = new List<PaymentCard>();
+    public virtual ICollection<PaymentCard> oPaymentCards { get; set; } = new List<PaymentCard>();
 
-    public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
+    public virtual ICollection<Sale> oSales { get; set; } = new List<Sale>();
 }

@@ -34,12 +34,21 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="ExpositionToSun" asp-action="Index">Exposición al sol</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="WaterDemmand" asp-action="Index">Demanda de agua</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Index">Categorías</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Usuarios
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Usuarios</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Addresses" asp-action="Index">Direcciones</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="UserType" asp-action="Index">Catálogo</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PaymentCards" asp-action="Index">Tarjetas de pago</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Advertisements" asp-action="Index">Anuncios</a>
                         </li>
                     </ul>
                 </div>

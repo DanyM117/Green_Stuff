@@ -15,5 +15,5 @@ public partial class Advertisement
 
     public string? ImagePath { get; set; }
 
-    public virtual User IduserNavigation { get; set; } = null!;
+    public virtual User oUsers { get; set; } = null!;
 }

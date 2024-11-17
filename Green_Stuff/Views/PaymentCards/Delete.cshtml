@@ -1,0 +1,36 @@
+﻿@model Green_Stuff.Models.PaymentCard
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3 class="text-danger">Está seguro de eliminar este registro?</h3>
+<hr />
+<div class="row">
+    <div class="col-4">
+        <form asp-action="Delete" asp-controller="PaymentCards" method="post">
+            <input type="hidden" asp-for="IdCard" />
+            <div class="mb-2">
+                <label class="fore-label" asp-for="Iduser">Username</label>
+                <input class="form-control form-control-sm" asp-for="oUsers.Username" type="text" disabled />
+            </div>
+            <div class="mb-2">
+                <label class="fore-label" asp-for="Number">Numero</label>
+                <input class="form-control form-control-sm" asp-for="Number" type="text" disabled />
+            </div>
+            <div class="mb-2">
+                <label class="fore-label" asp-for="NameOnCard">Nombre en tarjeta</label>
+                <input class="form-control form-control-sm" asp-for="NameOnCard" type="text" disabled />
+            </div>
+            <div class="mb-2">
+                <label class="fore-label" asp-for="Cvv">CVV</label>
+                <input class="form-control form-control-sm" asp-for="Cvv" type="text" disabled />
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-primary btn-sm w-25" type="submit">Eliminar</button>
+                <a class="btn btn-dark btn-sm" asp-action="Index" asp-controller="PaymentCards">Volver</a>
+            </div>
+        </form>
+    </div>
+
+</div>

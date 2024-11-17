@@ -1,0 +1,48 @@
+﻿@model Green_Stuff.Models.User
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3 class="text-danger">Está seguro de eliminar este registro?</h3>
+<hr />
+<div class="row">
+    <div class="col-4">
+        <form asp-action="Delete" asp-controller="User" method="post">
+            <input type="hidden" asp-for="IdUser" />
+            <div class="mb-2">
+                <label class="fore-label" asp-for="IduserType">Tipo</label>
+                <input class="form-control form-control-sm" asp-for="oUserTypes.Name" type="text" disabled />
+            </div>
+            <div class="mb-2">
+                <label class="fore-label" asp-for="Username">Username</label>
+                <input class="form-control form-control-sm" asp-for="Username" type="text" disabled />
+            </div>
+            <div class="mb-2">
+                <label class="fore-label" asp-for="FirstName">Nombres</label>
+                <input class="form-control form-control-sm" asp-for="FirstName" type="text" disabled />
+            </div>
+            <div class="mb-2">
+                <label class="fore-label" asp-for="LastName">Apellidos</label>
+                <input class="form-control form-control-sm" asp-for="LastName" type="text" disabled />
+            </div>
+            <div class="mb-2">
+                <label class="fore-label" asp-for="Email">Email</label>
+                <input class="form-control form-control-sm" asp-for="Email" type="text" disabled />
+            </div>
+            <div class="mb-2">
+                <label class="fore-label" asp-for="Password">Contraseña</label>
+                <input class="form-control form-control-sm" asp-for="Password" type="text" disabled />
+            </div>
+            <div class="mb-2">
+                <label class="fore-label" asp-for="ImagePath">Imagen</label>
+                <input class="form-control form-control-sm" asp-for="ImagePath" type="text" disabled />
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-danger btn-sm w-25" type="submit">Eliminar</button>
+                <a class="btn btn-dark btn-sm" asp-action="Index" asp-controller="User">Volver</a>
+            </div>
+        </form>
+    </div>
+
+</div>
