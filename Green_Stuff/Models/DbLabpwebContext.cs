@@ -291,7 +291,7 @@ public partial class DbLabpwebContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Warehouse__IDCat__37C5420D");
 
-            entity.HasOne(d => d.oSizes).WithMany(p => p.Warehouses)
+            entity.HasOne(d => d.oSizes).WithMany(p => p.oWarehouses)
                 .HasForeignKey(d => d.Idsize)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Warehouse__IDSiz__34E8D562");

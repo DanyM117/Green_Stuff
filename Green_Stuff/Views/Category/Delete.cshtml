@@ -1,0 +1,39 @@
+﻿@model Green_Stuff.Models.Category
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3 class="text-danger">Está seguro de eliminar este registro?</h3>
+<hr />
+
+<div class="row">
+    <div class="col-4">
+        <form asp-action="Detail" asp-controller="Category" method="post">
+            <input type="hidden" asp-for="IdCategory" />
+            <div class="mb-2">
+                <label class="fore-label" asp-for="Name">Nombre</label>
+                <input class="form-control form-control-sm" asp-for="Name" type="text" disabled />
+            </div>
+            <div class="mb-2">
+                <label class="fore-label" asp-for="Description">Descripción</label>
+                <input class="form-control form-control-sm" asp-for="Description" type="text" disabled />
+            </div>
+            <div class="mb-2">
+                <label class="fore-label" asp-for="ModificationDate">Fecha modificación</label>
+                <input class="form-control form-control-sm" asp-for="ModificationDate" type="text" disabled />
+            </div>
+            <div class="mb-2">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" asp-for="Enabled" disabled>
+                    <label class="form-check-label" for="flexSwitchCheckChecked" asp-for="Enabled">Habilitado</label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-danger btn-sm w-25" type="submit">Eliminar</button>
+                <a class="btn btn-dark btn-sm" asp-action="Index" asp-controller="Category">Volver</a>
+            </div>
+        </form>
+    </div>
+
+</div>

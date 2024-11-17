@@ -1,0 +1,45 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<Green_Stuff.Models.WaterDemmand>
+@{
+    ViewData["Title"] = "Demanda de agua";
+}
+<div class="card">
+    <div class="card-header">
+        <h5>Lista de demanda de agua</h5>
+    </div>
+    <div class="card-body">
+        <a class="btn btn-success btn-sm" asp-action="Detail" asp-controller="WaterDemmand" asp-route-IdItem="0">Crear nuevo</a>
+        <br />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th>Fecha modificacion</th>
+                    <th>Habilitado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.IdWater</td>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>@item.ModificationDate</td>
+                        <td>@item.Enabled</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm" asp-action="Detail" asp-controller="WaterDemmand" asp-route-IdWater="@item.IdWater">Editar</a>
+                            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-controller="WaterDemmand" asp-route-IdWater="@item.IdWater">Eliminar</a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

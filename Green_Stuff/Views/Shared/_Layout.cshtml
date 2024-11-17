@@ -25,6 +25,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Warehouse" asp-action="Index">Almacen</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Filtros
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Sizes" asp-action="Index">Tamaños</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="ExpositionToSun" asp-action="Index">Exposición al sol</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="WaterDemmand" asp-action="Index">Demanda de agua</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Index">Categorías</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
