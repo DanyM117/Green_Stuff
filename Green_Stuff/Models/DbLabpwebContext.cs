@@ -160,12 +160,12 @@ public partial class DbLabpwebContext : DbContext
             entity.Property(e => e.TotalAmmount).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.TotalQuantity).HasColumnType("decimal(10, 2)");
 
-            entity.HasOne(d => d.IdcardNavigation).WithMany(p => p.oSales)
+            entity.HasOne(d => d.oCards).WithMany(p => p.oSales)
                 .HasForeignKey(d => d.Idcard)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Sales__IDCard__47FBA9D6");
 
-            entity.HasOne(d => d.IduserNavigation).WithMany(p => p.oSales)
+            entity.HasOne(d => d.oUsers).WithMany(p => p.oSales)
                 .HasForeignKey(d => d.Iduser)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Sales__IDUser__4707859D");

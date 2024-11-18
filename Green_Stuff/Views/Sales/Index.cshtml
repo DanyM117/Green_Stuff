@@ -1,0 +1,237 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Reporte Ventas";
+}
+@section Estilos {
+    <link href="~/lib/jquery/DataTables/datatables.min.css" rel="stylesheet" />
+    <link href="~/lib/jquery/DataTables/buttons.css" rel="stylesheet" />
+    <link href="~/lib/jquery/DataTables/fixedHeader.dataTables.css" rel="stylesheet" />
+    <style>
+        tfoot input {
+            width: 100%;
+        }
+    </style>
+}
+<div class="card">
+    <div class="card-header">
+        <h5>Lista de ventas</h5>
+    </div>
+    <div class="card-body">
+        <table id="tbSales" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Usuario</th>
+                    <th>Tarjeta</th>
+                    <th>Monto Total</th>
+                    <th>Fecha de creacion</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>#</th>
+                    <th>Usuario</th>
+                    <th>Tarjeta</th>
+                    <th>Monto Total</th>
+                    <th>Fecha de creacion</th>
+                    <th>Cantidad</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">Ventas ultimos 5 días</div>
+            <div class="card-body">
+                <canvas id="chartVentas" style="max-height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">Productos mas vendidos</div>
+            <div class="card-body">
+                <canvas id="chartProductos" style="max-height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/lib/jquery/DataTables/datatables.min.js"></script>
+    <script src="~/lib/jquery/DataTables/datatables.buttons.js"></script>
+    <script src="~/lib/jquery/DataTables/jszip.min.js"></script>
+    <script src="~/lib/jquery/DataTables/buttons.html5.min.js"></script>
+    <script src="~/lib/jquery/DataTables/buttons.print.min.js"></script>
+    <script src="~/lib/jquery/DataTables/pdfmake.min.js"></script>
+    <script src="~/lib/jquery/DataTables/vfs_fonts.js"></script>
+    <script src="~/lib/jquery/DataTables/dataTables.fixedHeader.js"></script>
+    <script src="~/lib/jquery/DataTables/fixedHeader.dataTables.js"></script>
+    <script>
+        function SummarySales() {
+            fetch("Sales/SalesSummary")
+            .then((response) => {
+                return response.ok? response.json() : Promise.reject(response);
+            })
+            .then((dataJson) => {
+                console.log(dataJson);
+
+                const labels = dataJson.map((item) => { return item.fecha});
+
+                const values = dataJson.map((item) => { return item.cantidad});
+                        const data = {
+                          labels: labels,
+                          datasets: [{
+                            label: '',
+                            data: values,
+                            backgroundColor: 'rgb(54, 162, 235)',
+                            borderWidth: 1
+                          }]
+                        };
+                        const config = {
+                          type: 'bar',
+                          data: data,
+                          options: {
+                            scales: {
+                              y: {
+                                beginAtZero: true
+                              }
+                            }
+                          },
+                        };
+                        const canvasBarras = document.getElementById("chartVentas");
+                        const graficaBarras = new Chart(canvasBarras,config);
+            }).catch((error) => {
+                console.log("error")
+            }) 
+        }
+        function SummarySaleDetails() {
+            fetch("Sales/SaleDetailSummary")
+            .then((response) => {
+                return response.ok? response.json() : Promise.reject(response);
+            })
+            .then((dataJson) => {
+                console.log(dataJson);
+
+                const labels = dataJson.map((item) => { return item.producto});
+
+                const values = dataJson.map((item) => { return item.cantidad});
+                const data = {
+                  labels: labels,
+                  datasets: [{
+                    label: 'Cantidad',
+                    data: values,
+                    backgroundColor: [
+                      'rgb(255, 99, 132)',
+                      'rgb(54, 162, 235)',
+                      'rgb(255, 205, 86)',
+                      '#01AF40'
+                    ],
+                    hoverOffset: 4
+                  }]
+                };
+                const config = {
+                  type: 'doughnut',
+                  data: data,
+                };
+                const canvasDona = document.getElementById("chartProductos");
+                const graficaDona = new Chart(canvasDona,config);
+            }).catch((error) => {
+                console.log("error")
+            })
+        }
+
+        $(document).ready(() => {
+            SummarySales();
+            SummarySaleDetails();
+        })
+    </script>
+    <script>
+        new DataTable('#tbSales', {
+            "ajax":{
+                "url":"@Url.Action("ListaSales", "Sales")",
+                "type": "GET",
+                "datatype": "json"
+            },
+            "columns": [
+                {"data":"idSale"},
+                {"data":"username"},
+                {"data":"p_Card"},
+                {"data":"totalAmmount"},
+                {"data":"cdate"},
+                {"data":"totalQuantity"}
+            ],
+            "language": {
+                "url": "lib/jquery/DataTables/es-MX.json"
+            },
+            columnDefs:[
+                {
+                    targets: 0,
+                    visible: false
+                }
+            ],
+            dom: "Bfrtip",
+            buttons: [
+                {
+                    extend: "excelHtml5",
+                    text: "Exportar Excel",
+                    filename: "Reporte de ventas",
+                    title: "",
+                    exportOptions: {
+                        columns:[1,2,3,4,5]
+                    }
+                },
+                {
+                    extend: "pdfHtml5",
+                    text: "Exportar PDF",
+                    filename: "Reporte de ventas",
+                    title: "",
+                    exportOptions: {
+                        columns:[1,2,3,4,5]
+                    }
+                },
+                {
+                    extend: "print",
+                    title: "",
+                    exportOptions: {
+                        columns:[1,2,3,4,5]
+                    }
+                },
+                "pageLength"
+            ],
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        let column = this;
+                        let title = column.footer().textContent;
+
+                        // Create input element
+                        let input = document.createElement('input');
+                        input.placeholder = title;
+                        column.footer().replaceChildren(input);
+
+                        // Event listener for user input
+                        input.addEventListener('keyup', () => {
+                            if (column.search() !== this.value) {
+                                column.search(input.value).draw();
+                            }
+                        });
+                    });
+            },
+            fixedHeader: {
+                footer: true
+            }
+        });
+        /*$('#tbSales').DataTable({
+            
+        });*/
+    </script>
+}

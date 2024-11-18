@@ -7,12 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Resources\Images\Food\AbonoFloralia.jpg" />
+    <None Include="wwwroot\Resources\Images\Plants\buganvilla1.jpg" />
+    <None Include="wwwroot\Resources\Images\Plants\cactus1.jpg" />
+    <None Include="wwwroot\Resources\Images\Plants\fresno1.jpg" />
+    <None Include="wwwroot\Resources\Images\Tools\azadon1.jpg" />
+    <None Include="wwwroot\Resources\Images\Tools\Pala.jpg" />
+    <None Include="wwwroot\Resources\Images\Tools\Tijeras1.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
 
 </Project>
