@@ -89,7 +89,7 @@
                         const data = {
                           labels: labels,
                           datasets: [{
-                            label: '',
+                            label: 'Cantidad',
                             data: values,
                             backgroundColor: 'rgb(54, 162, 235)',
                             borderWidth: 1
@@ -154,7 +154,7 @@
         })
     </script>
     <script>
-        new DataTable('#tbSales', {
+        var table = new DataTable('#tbSales', {
             "ajax":{
                 "url":"@Url.Action("ListaSales", "Sales")",
                 "type": "GET",

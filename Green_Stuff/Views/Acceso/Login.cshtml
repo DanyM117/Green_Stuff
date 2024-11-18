@@ -1,0 +1,35 @@
+﻿
+@{
+    Layout = null;
+}
+@model Green_Stuff.Models.User;
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="row mt-5">
+        <div class="col-sm-4 offset-sm-4">
+            <form asp-controller="Acceso" asp-action="ValidarUser" method="post">
+                <div class="mb-3">
+                    <label for="userorEmail" class="form-label">Email o Username</label>
+                    <input type="text" class="form-control" id="userorEmail" name="userorEmail" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+            </form>
+            <div class="mt-3">
+                <a asp-controller="Acceso" asp-action="Registrar" class="btn btn-secondary">Registrar</a>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
