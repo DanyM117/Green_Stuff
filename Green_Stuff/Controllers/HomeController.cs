@@ -10,16 +10,17 @@ namespace Green_Stuff.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly DbLabpwebContext _DBContext;
+        private readonly DbLabpwebContext _context;
 
         public HomeController(DbLabpwebContext context)
         {
-            _DBContext = context;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var advertisements = _context.Advertisements.ToList();
+            return View(advertisements);
         }
     }
 }

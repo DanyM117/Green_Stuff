@@ -14,6 +14,26 @@
         }
     </style>
 }
+
+<div class="row mt-2">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">Ventas ultimos 5 días</div>
+            <div class="card-body">
+                <canvas id="chartVentas" style="max-height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">Productos mas vendidos</div>
+            <div class="card-body">
+                <canvas id="chartProductos" style="max-height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="card">
     <div class="card-header">
         <h5>Lista de ventas</h5>
@@ -43,25 +63,6 @@
                 </tr>
             </tfoot>
         </table>
-    </div>
-</div>
-
-<div class="row mt-2">
-    <div class="col-sm-6">
-        <div class="card">
-            <div class="card-header">Ventas ultimos 5 días</div>
-            <div class="card-body">
-                <canvas id="chartVentas" style="max-height:250px"></canvas>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="card">
-            <div class="card-header">Productos mas vendidos</div>
-            <div class="card-body">
-                <canvas id="chartProductos" style="max-height:250px"></canvas>
-            </div>
-        </div>
     </div>
 </div>
 @section Scripts {

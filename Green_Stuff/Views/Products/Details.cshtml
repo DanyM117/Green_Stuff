@@ -1,0 +1,30 @@
+﻿@model Green_Stuff.Models.Warehouse
+@{
+    ViewData["Title"] = "Detalles del Producto";
+}
+
+<h1>@Model.Name</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <img src="@(string.IsNullOrEmpty(Model.ImagePath) ? "no-image.png" : Model.ImagePath)" class="img-fluid" alt="@Model.Name" />
+    </div>
+    <div class="col-md-6">
+        <h3>@Model.Name</h3>
+        <p>@Model.Description</p>
+        <p><strong>Categoría:</strong> @Model.oCategories.Name</p>
+        <p><strong>Tamaño:</strong> @Model.oSizes.Name</p>
+        <p><strong>Demanda de Agua:</strong> @Model.oWaterDemmand?.Name ?? "N/A"</p>
+        <p><strong>Exposición al Sol:</strong> @Model.oExpositionToSun?.Name ?? "N/A"</p>
+        <p><strong>Precio:</strong> @Model.UnitPrice.ToString("C")</p>
+
+        <form asp-action="AddToCart" method="post">
+            <input type="hidden" name="productId" value="@Model.IdItem" />
+            <div class="form-group">
+                <label for="quantity">Cantidad:</label>
+                <input type="number" name="quantity" min="1" max="@Model.Quantity" value="1" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-success">Agregar al Carrito</button>
+        </form>
+    </div>
+</div>

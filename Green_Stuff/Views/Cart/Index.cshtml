@@ -1,0 +1,45 @@
+﻿@model List<Green_Stuff.Models.ViewModels.CartItem>
+@{
+    ViewData["Title"] = "Carrito de Compras";
+}
+
+<h1>Carrito de Compras</h1>
+
+@if (!Model.Any())
+{
+    <p>No hay productos en el carrito.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Product.UnitPrice.ToString("C")</td>
+                    <td>@(item.Product.UnitPrice * item.Quantity).ToString("C")</td>
+                    <td>
+                        <form asp-action="Remove" method="post">
+                            <input type="hidden" name="productId" value="@item.Product.IdItem" />
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-end">
+        <a asp-action="Checkout" class="btn btn-success">Proceder al Pago</a>
+    </div>
+}

@@ -6,5 +6,6 @@ namespace Green_Stuff.Models.ViewModels
     {
         public Advertisement oAd {  get; set; }
         public List<SelectListItem> oadslist { get; set; }
+        public string Username { get; set; }
     }
 }

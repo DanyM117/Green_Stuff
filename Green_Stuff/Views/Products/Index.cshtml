@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Green_Stuff.Models.Warehouse>
+@{
+    ViewData["Title"] = "Productos";
+    var categoryId = ViewContext.HttpContext.Request.Query["categoryId"];
+    var sizeId = ViewContext.HttpContext.Request.Query["sizeId"];
+    var waterDemandId = ViewContext.HttpContext.Request.Query["waterDemandId"];
+    var sunExposureId = ViewContext.HttpContext.Request.Query["sunExposureId"];
+}
+
+<h1>Productos</h1>
+
+<form method="get">
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <input type="text" name="searchString" class="form-control" placeholder="Buscar por nombre" value="@ViewContext.HttpContext.Request.Query["searchString"]" />
+        </div>
+
+        <div class="col-md-2">
+            @Html.DropDownList("categoryId", new SelectList((List<Green_Stuff.Models.Category>)ViewData["Categories"], "IdCategory", "Name", categoryId), "Categoría", new { @class = "form-control" })
+        </div>
+
+        <div class="col-md-2">
+            @Html.DropDownList("sizeId", new SelectList((List<Green_Stuff.Models.Size>)ViewData["Sizes"], "IdSize", "Name", sizeId), "Tamaño", new { @class = "form-control" })
+        </div>
+
+        <div class="col-md-2">
+            @Html.DropDownList("waterDemandId", new SelectList((List<Green_Stuff.Models.WaterDemmand>)ViewData["WaterDemands"], "IdWater", "Name", waterDemandId), "Demanda de Agua", new { @class = "form-control" })
+        </div>
+
+        <div class="col-md-2">
+            @Html.DropDownList("sunExposureId", new SelectList((List<Green_Stuff.Models.ExpositionToSun>)ViewData["SunExposures"], "IdSun", "Name", sunExposureId), "Exposición al Sol", new { @class = "form-control" })
+        </div>
+
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="@(string.IsNullOrEmpty(item.ImagePath) ? "no-image.png" : item.ImagePath)" class="card-img-top" alt="@item.Name" />
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Description</p>
+                    <p class="card-text"><strong>Precio:</strong> @item.UnitPrice.ToString("C")</p>
+                    <a asp-action="Details" asp-route-id="@item.IdItem" class="btn btn-primary">Ver Detalles</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -7,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson();
+
 builder.Services.AddDbContext<DbLabpwebContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("cadenaSQL"))
 );
@@ -18,6 +21,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true; // Proteger las cookies de sesión contra acceso JavaScript
     options.Cookie.IsEssential = true; // Marcar las cookies como esenciales
 });
+
 
 
 

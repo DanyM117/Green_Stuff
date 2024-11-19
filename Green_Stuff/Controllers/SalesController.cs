@@ -55,7 +55,7 @@ namespace Green_Stuff.Controllers
         [HttpGet]
         public JsonResult ListaSales()
         {
-            List<Sale> list = new List<Sale>();
+            List<SalesAnalisysVM> list = new List<SalesAnalisysVM>();
             using (var connection = new SqlConnection(cadenaSQL))
             {
                 connection.Open();
@@ -65,7 +65,7 @@ namespace Green_Stuff.Controllers
                 {
                     while (reader.Read())
                     {
-                        list.Add(new Sale
+                        list.Add(new SalesAnalisysVM
                         {
                             IdSale = Convert.ToInt32(reader["ID_Sale"]),
                             Iduser = 0,

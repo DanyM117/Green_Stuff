@@ -31,11 +31,6 @@ namespace Green_Stuff.Controllers
         [HttpPost]
         public ActionResult Registrar(User oUser)
         {
-            /*if (oUser.Password != oUser.ConfirmarPassword)
-            {
-                ViewData["Mensaje"] = "Las contraseñas no coinciden";
-                return View(oUser);
-            }*/
 
             bool Registrado;
             string Mensaje;
@@ -70,7 +65,7 @@ namespace Green_Stuff.Controllers
             }
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public ActionResult ValidarUser(string userorEmail, string password)
         {
             if (string.IsNullOrEmpty(userorEmail) || string.IsNullOrEmpty(password))
@@ -92,10 +87,69 @@ namespace Green_Stuff.Controllers
             {
                 // Guardar el tipo de usuario en la sesión
                 HttpContext.Session.SetString("UserType", user.oUserTypes.Name);
+                HttpContext.Session.SetString("Username", user.Username);
+
+                return RedirectToAction("Index", "Home");
+            }
+        }*/
+        /*[HttpPost]
+        public ActionResult ValidarUser(string userorEmail, string password)
+        {
+            if (string.IsNullOrEmpty(userorEmail) || string.IsNullOrEmpty(password))
+            {
+                return RedirectToAction("Login", "Acceso");
+            }
+
+            // Buscar usuario en la base de datos
+            var user = _DBContext.Users
+                       .Include(u => u.oUserTypes)
+                       .FirstOrDefault(u => (u.Email == userorEmail || u.Username == userorEmail)
+                                            && u.Password == password);
+
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Acceso");
+            }
+            else
+            {
+                // Guardar el tipo de usuario, nombre de usuario y ID en la sesión
+                HttpContext.Session.SetString("UserType", user.oUserTypes.Name);
+                HttpContext.Session.SetString("Username", user.Username);
+                HttpContext.Session.SetInt32("UserID", user.IdUser); // Almacenar el ID del usuario
+
+                return RedirectToAction("Index", "Home");
+            }
+        }*/
+        [HttpPost]
+        public ActionResult ValidarUser(string userorEmail, string password)
+        {
+            if (string.IsNullOrEmpty(userorEmail) || string.IsNullOrEmpty(password))
+            {
+                return RedirectToAction("Login", "Acceso");
+            }
+
+            // Buscar usuario en la base de datos
+            var user = _DBContext.Users
+                       .Include(u => u.oUserTypes)
+                       .FirstOrDefault(u => (u.Email == userorEmail || u.Username == userorEmail)
+                                            && u.Password == password);
+
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Acceso");
+            }
+            else
+            {
+                // Guardar el tipo de usuario, nombre de usuario y ID en la sesión
+                HttpContext.Session.SetString("UserType", user.oUserTypes.Name);
+                HttpContext.Session.SetString("Username", user.Username);
+                HttpContext.Session.SetInt32("UserID", user.IdUser); // Asegúrate de que sea 'Iduser' o el nombre correcto de la propiedad
 
                 return RedirectToAction("Index", "Home");
             }
         }
+
+
 
 
         public IActionResult Salir()
@@ -103,29 +157,5 @@ namespace Green_Stuff.Controllers
             HttpContext.Session.SetString("UserType", "No registrado");
             return RedirectToAction("Index", "Home");
         }
-
-        /*[HttpPost]
-        public ActionResult Login(User oUser)
-        {
-            using (SqlConnection cn = new SqlConnection(cadenaSQL))
-            {
-                SqlCommand cmd = new SqlCommand("sp_ValidarUsuario", cn);
-                cmd.Parameters.AddWithValue("Username", oUser.IduserType);
-                cmd.Parameters.AddWithValue("Email", oUser.Email);
-                cmd.Parameters.AddWithValue("password_", oUser.Password);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cn.Open();
-                oUser.IdUser = Convert.ToInt32(cmd.ExecuteScalar().ToString);
-            }
-            if (oUser.IdUser !=0)
-            {
-                Session["usuario"] = oUser;
-                return RedirectToAction("Index", "Home");
-            } else
-            {
-                ViewData["Mensaje"] = "Usuario no encontrado";
-            }
-            return View();
-        }*/
     }
 }

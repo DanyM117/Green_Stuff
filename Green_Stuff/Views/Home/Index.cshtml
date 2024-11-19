@@ -1,8 +1,62 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model List<Green_Stuff.Models.Advertisement>
+<style>
+    .carousel-image {
+        height: 400px; /* Ajusta según lo necesario */
+        width: 100px; /* Mantiene la proporción */
+         /* Asegura que la imagen se recorte adecuadamente */
+    }
+
+    .carousel-control-custom {
+        background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+        border-radius: 50%; /* Añade un borde redondeado si lo deseas */
+    }
+
+    .carousel-caption-custom h5,
+    .carousel-caption-custom p {
+        color: #333; /* Cambia el color del título y descripción */
+    }
+</style>
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            @if (Model != null && Model.Any())
+            {
+                for (int i = 0; i < Model.Count; i++)
+                {
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-label="Slide @(i + 1)" @(i == 0 ? "aria-current=\"true\"" : "")></button>
+                }
+            }
+        </div>
+        <div class="carousel-inner">
+            @if (Model != null && Model.Any())
+            {
+                bool isActive = true;
+                foreach (var ad in Model)
+                {
+                    <div class="carousel-item @(isActive ? "active" : "")" data-bs-interval="5000">
+                        <img src="@ad.ImagePath" class="d-block w-100" alt="@ad.Title" style="height: 400px; object-fit: cover;">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>@ad.Title</h5>
+                            <p>@ad.Description</p>
+                        </div>
+                    </div>
+                    isActive = false; // Solo el primer elemento tendrá la clase "active"
+                }
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
 </div>

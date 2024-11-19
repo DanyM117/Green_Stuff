@@ -1,0 +1,25 @@
+﻿@model Green_Stuff.Models.PaymentCard
+@{
+    ViewData["Title"] = "Agregar Tarjeta de Pago";
+}
+
+<h1>Agregar Tarjeta de Pago</h1>
+
+<form asp-action="AddCard" method="post">
+    <div class="form-group">
+        <label asp-for="NameOnCard"></label>
+        <input asp-for="NameOnCard" class="form-control" />
+        <span asp-validation-for="NameOnCard" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Number"></label>
+        <input asp-for="Number" class="form-control" />
+        <span asp-validation-for="Number" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Cvv"></label>
+        <input asp-for="Cvv" class="form-control" />
+        <span asp-validation-for="Cvv" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Tarjeta</button>
+</form>

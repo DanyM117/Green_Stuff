@@ -1,21 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace Green_Stuff.Models;
-
-public partial class PaymentCard
+namespace Green_Stuff.Models
 {
-    public int IdCard { get; set; }
+    public partial class PaymentCard
+    {
+        public int IdCard { get; set; }
 
-    public int Iduser { get; set; }
+        public int Iduser { get; set; }
 
-    public long Number { get; set; }
+        [Required]
+        [CreditCard]
+        [Display(Name = "Número de Tarjeta")]
+        public long Number { get; set; }
 
-    public string NameOnCard { get; set; } = null!;
+        [Required]
+        [Display(Name = "Nombre en la Tarjeta")]
+        public string NameOnCard { get; set; } = null!;
 
-    public short Cvv { get; set; }
+        [Required]
+        [Range(100, 9999)]
+        [Display(Name = "CVV")]
+        public short Cvv { get; set; }
 
-    public virtual User oUsers { get; set; } = null!;
+        public virtual User oUsers { get; set; } = null!;
 
-    public virtual ICollection<Sale> oSales { get; set; } = new List<Sale>();
+        public virtual ICollection<Sale> oSales { get; set; } = new List<Sale>();
+    }
 }
