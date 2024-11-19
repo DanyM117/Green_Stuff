@@ -20,25 +20,6 @@ namespace Green_Stuff.Controllers
             List<Advertisement> listad = _DBContext.Advertisements.Include(o => o.oUsers).ToList();
             return View(listad);
         }
-        /*[HttpGet]
-        // GET: AdvertisementsController/Details/5
-        public ActionResult Detail(int IdAdvertisement)
-        {
-            AdvertisementsVM oAdVM= new AdvertisementsVM()
-            {
-                oAd = new Advertisement(),
-                oadslist = _DBContext.Users.Select(users => new SelectListItem()
-                {
-                    Text = users.Username,
-                    Value = users.IdUser.ToString()
-                }).ToList()
-            };
-            if (IdAdvertisement != 0)
-            {
-                oAdVM.oAd = _DBContext.Advertisements.Find(IdAdvertisement);
-            }
-            return View(oAdVM);
-        }*/
         [HttpGet]
         // GET: AdvertisementsController/Detail/5
         public ActionResult Detail(int IdAdvertisement)
@@ -46,25 +27,21 @@ namespace Green_Stuff.Controllers
             AdvertisementsVM oAdVM = new AdvertisementsVM()
             {
                 oAd = new Advertisement(),
-                Username = "" // Inicializar el nombre de usuario
+                Username = ""
             };
 
             if (IdAdvertisement != 0)
             {
-                // Editando anuncio existente
                 oAdVM.oAd = _DBContext.Advertisements.Include(a => a.oUsers).FirstOrDefault(a => a.IdAdvertisement == IdAdvertisement);
                 if (oAdVM.oAd == null)
                 {
                     return NotFound();
                 }
 
-                // Obtener el nombre de usuario del creador original
                 oAdVM.Username = oAdVM.oAd.oUsers.Username;
             }
             else
             {
-                // Creando nuevo anuncio
-                // Obtener el nombre de usuario actual de la sesión
                 oAdVM.Username = HttpContext.Session.GetString("Username");
             }
 
@@ -72,20 +49,6 @@ namespace Green_Stuff.Controllers
         }
 
 
-        /*[HttpPost]
-        public ActionResult Detail(AdvertisementsVM oAdVM)
-        {
-            if (oAdVM.oAd.IdAdvertisement == 0)
-            {
-                _DBContext.Advertisements.Add(oAdVM.oAd);
-            }
-            else
-            {
-                _DBContext.Advertisements.Update(oAdVM.oAd);
-            }
-            _DBContext.SaveChanges();
-            return RedirectToAction("Index", "Advertisements");
-        }*/
         [HttpPost]
         public ActionResult Detail(AdvertisementsVM oAdVM)
         {
@@ -93,29 +56,23 @@ namespace Green_Stuff.Controllers
 
             if (userId == null)
             {
-                // Si el usuario no ha iniciado sesión, redirigir al login
                 return RedirectToAction("Login", "Acceso");
             }
 
             if (oAdVM.oAd.IdAdvertisement == 0)
             {
-                // Crear nuevo anuncio
-                // Asignar el ID del usuario actual como creador
                 oAdVM.oAd.Iduser = userId.Value;
 
                 _DBContext.Advertisements.Add(oAdVM.oAd);
             }
             else
             {
-                // Editar anuncio existente
-                // Buscar el anuncio existente en la base de datos
                 var existingAd = _DBContext.Advertisements.Find(oAdVM.oAd.IdAdvertisement);
                 if (existingAd == null)
                 {
                     return NotFound();
                 }
 
-                // Actualizar los campos necesarios sin modificar el Iduser
                 existingAd.Title = oAdVM.oAd.Title;
                 existingAd.Description = oAdVM.oAd.Description;
                 existingAd.ImagePath = oAdVM.oAd.ImagePath;

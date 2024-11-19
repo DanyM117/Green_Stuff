@@ -36,9 +36,23 @@ namespace Green_Stuff.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProfile(User model)
         {
+            foreach (var state in ModelState)
+            {
+                foreach (var error in state.Value.Errors)
+                {
+                    Console.WriteLine($"Property: {state.Key}, Error: {error.ErrorMessage}");
+                }
+            }
+            var userId = HttpContext.Session.GetInt32("UserID");
+
+            if (!userId.HasValue)
+            {
+                return RedirectToAction("Login", "Acceso");
+            }
+
             if (ModelState.IsValid)
             {
-                var user = await _context.Users.FindAsync(model.IdUser);
+                var user = await _context.Users.FindAsync(userId.Value);
 
                 if (user == null)
                 {
@@ -58,7 +72,7 @@ namespace Green_Stuff.Controllers
 
                 _context.Update(user);
                 await _context.SaveChangesAsync();
-
+                HttpContext.Session.SetString("Username", user.Username);
                 return RedirectToAction("Index", "Home");
             }
 
@@ -95,9 +109,21 @@ namespace Green_Stuff.Controllers
                 return RedirectToAction("Login", "Acceso");
             }
 
+            model.Iduser = userId.Value;
+
+            if (!ModelState.IsValid)
+            {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Property: {state.Key}, Error: {error.ErrorMessage}");
+                    }
+                }
+            }
+
             if (ModelState.IsValid)
             {
-                model.Iduser = userId.Value;
                 _context.PaymentCards.Add(model);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("PaymentCards");

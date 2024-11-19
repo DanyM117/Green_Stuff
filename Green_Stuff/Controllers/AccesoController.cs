@@ -64,62 +64,6 @@ namespace Green_Stuff.Controllers
                 return View(oUser);
             }
         }
-
-        /*[HttpPost]
-        public ActionResult ValidarUser(string userorEmail, string password)
-        {
-            if (string.IsNullOrEmpty(userorEmail) || string.IsNullOrEmpty(password))
-            {
-                return RedirectToAction("Login", "Acceso");
-            }
-
-            // Buscar usuario en la base de datos
-            var user = _DBContext.Users
-                       .Include(u => u.oUserTypes) // Asegúrate de incluir el tipo de usuario
-                       .FirstOrDefault(u => (u.Email == userorEmail || u.Username == userorEmail)
-                                            && u.Password == password);
-
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Acceso");
-            }
-            else
-            {
-                // Guardar el tipo de usuario en la sesión
-                HttpContext.Session.SetString("UserType", user.oUserTypes.Name);
-                HttpContext.Session.SetString("Username", user.Username);
-
-                return RedirectToAction("Index", "Home");
-            }
-        }*/
-        /*[HttpPost]
-        public ActionResult ValidarUser(string userorEmail, string password)
-        {
-            if (string.IsNullOrEmpty(userorEmail) || string.IsNullOrEmpty(password))
-            {
-                return RedirectToAction("Login", "Acceso");
-            }
-
-            // Buscar usuario en la base de datos
-            var user = _DBContext.Users
-                       .Include(u => u.oUserTypes)
-                       .FirstOrDefault(u => (u.Email == userorEmail || u.Username == userorEmail)
-                                            && u.Password == password);
-
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Acceso");
-            }
-            else
-            {
-                // Guardar el tipo de usuario, nombre de usuario y ID en la sesión
-                HttpContext.Session.SetString("UserType", user.oUserTypes.Name);
-                HttpContext.Session.SetString("Username", user.Username);
-                HttpContext.Session.SetInt32("UserID", user.IdUser); // Almacenar el ID del usuario
-
-                return RedirectToAction("Index", "Home");
-            }
-        }*/
         [HttpPost]
         public ActionResult ValidarUser(string userorEmail, string password)
         {
@@ -128,7 +72,6 @@ namespace Green_Stuff.Controllers
                 return RedirectToAction("Login", "Acceso");
             }
 
-            // Buscar usuario en la base de datos
             var user = _DBContext.Users
                        .Include(u => u.oUserTypes)
                        .FirstOrDefault(u => (u.Email == userorEmail || u.Username == userorEmail)
@@ -140,10 +83,9 @@ namespace Green_Stuff.Controllers
             }
             else
             {
-                // Guardar el tipo de usuario, nombre de usuario y ID en la sesión
                 HttpContext.Session.SetString("UserType", user.oUserTypes.Name);
                 HttpContext.Session.SetString("Username", user.Username);
-                HttpContext.Session.SetInt32("UserID", user.IdUser); // Asegúrate de que sea 'Iduser' o el nombre correcto de la propiedad
+                HttpContext.Session.SetInt32("UserID", user.IdUser);
 
                 return RedirectToAction("Index", "Home");
             }
@@ -155,6 +97,8 @@ namespace Green_Stuff.Controllers
         public IActionResult Salir()
         {
             HttpContext.Session.SetString("UserType", "No registrado");
+            HttpContext.Session.SetInt32("UserID", 0);
+            HttpContext.Session.SetString("Username", string.Empty);
             return RedirectToAction("Index", "Home");
         }
     }
