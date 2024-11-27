@@ -1,53 +1,83 @@
 ﻿@model Green_Stuff.Models.ViewModels.SizesVM
 @{
-    ViewData["Title"] = "Detail";
+    if (Model.oSize.IdSize == 0)
+    {
+        ViewData["Title"] = "Crear Tamaño";
+    }
+    else
+    {
+        ViewData["Title"] = "Editar Tamaño";
+    }
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if (Model.oSize.IdSize == 0)
-{
-    <h1>Crear Tamaño</h1>
-}
-else
-{
-    <h1>Editar</h1>
-}
+<h1>@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-4">
-        <form asp-action="Detail" asp-controller="Sizes" method="post">
-            <input type="hidden" asp-for="oSize.IdSize" />
-            <div class="mb-2">
-                <label class="fore-label" asp-for="oSize.Name">Nombre</label>
-                <input class="form-control form-control-sm" asp-for="oSize.Name" type="text" />
-            </div>
-            <div class="mb-2">
-                <label class="fore-label" asp-for="oSize.Description">Descripción</label>
-                <input class="form-control form-control-sm" asp-for="oSize.Description" type="text" />
-            </div>
-            <div class="mb-2">
-                <label class="fore-label" asp-for="oSize.ModificationDate">Fecha modificación</label>
-                <input class="form-control form-control-sm" asp-for="oSize.ModificationDate" type="text" />
-            </div>
-            <div class="mb-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" asp-for="oSize.Enabled">
-                    <label class="form-check-label" for="flexSwitchCheckChecked" asp-for="oSize.Enabled">Habilitado</label>
+<div class="card">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
                 </div>
-            </div>
+            }
 
-            <div class="mb-3">
-                @if (Model.oSize.IdSize == 0)
-                {
-                    <button class="btn btn-primary btn-sm w-25" type="submit">Crear</button>
-                }
-                else
-                {
-                    <button class="btn btn-primary btn-sm w-25" type="submit">Actualizar</button>
-                }
-                <a class="btn btn-dark btn-sm" asp-action="Index" asp-controller="Sizes">Volver</a>
-            </div>
-        </form>
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+
+            <form asp-action="Detail" asp-controller="Sizes" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="oSize.IdSize" />
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="oSize.Name"></label>
+                    <input class="form-control form-control-sm" asp-for="oSize.Name" type="text" />
+                    <span asp-validation-for="oSize.Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="oSize.Description"></label>
+                    <input class="form-control form-control-sm" asp-for="oSize.Description" type="text" />
+                    <span asp-validation-for="oSize.Description" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="oSize.ModificationDate"></label>
+                    <input class="form-control form-control-sm" asp-for="oSize.ModificationDate" type="date" />
+                    <span asp-validation-for="oSize.ModificationDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" asp-for="oSize.Enabled" id="@($"EnabledSwitch_{Model.oSize.IdSize}")">
+                        <label class="form-check-label" for="@($"EnabledSwitch_{Model.oSize.IdSize}")">Habilitado</label>
+                        <span asp-validation-for="oSize.Enabled" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                    @if (Model.oSize.IdSize == 0)
+                    {
+                        <button class="btn btn-primary btn-sm" type="submit">Crear</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary btn-sm" type="submit">Actualizar</button>
+                    }
+                    <a class="btn btn-dark btn-sm" asp-action="Index" asp-controller="Sizes">Volver</a>
+                </div>
+            </form>
+        </div>
     </div>
-
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

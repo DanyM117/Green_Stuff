@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Green_Stuff.Helpers
 {
-    //public static class ViewHelper
+    public static class ViewHelper
     {
         public static DbLabpwebContext GetDbContext(this IHtmlHelper htmlHelper)
         {

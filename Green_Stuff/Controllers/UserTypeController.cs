@@ -19,32 +19,73 @@ namespace Green_Stuff.Controllers
             return View(usert);
         }
         [HttpGet]
-        // GET: UserTypeController/Details/5
-        public ActionResult Detail(int IdUserType)
+        // GET: UserTypeController/Detail/0 para crear un nuevo tipo de usuario
+        public ActionResult Detail(int IdUserType = 0)
         {
             UserTypeVM oUserTypeVM = new UserTypeVM()
             {
                 oUserType = new UserType()
             };
+
             if (IdUserType != 0)
             {
+                // Editar tipo de usuario existente
                 oUserTypeVM.oUserType = _DBContext.UserTypes.Find(IdUserType);
-            }
-            return View(oUserTypeVM);
-        }
-        [HttpPost]
-        public ActionResult Detail(UserTypeVM oUserTypeVM)
-        {
-            if (oUserTypeVM.oUserType.IdUserType == 0)
-            {
-                _DBContext.UserTypes.Add(oUserTypeVM.oUserType);
+                if (oUserTypeVM.oUserType == null)
+                {
+                    TempData["ErrorMessage"] = "Tipo de usuario no encontrado.";
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
-                _DBContext.UserTypes.Update(oUserTypeVM.oUserType);
+                // Crear nuevo tipo de usuario: asignar la fecha actual
+                oUserTypeVM.oUserType.ModificationDate = DateTime.Now;
+                oUserTypeVM.oUserType.Enabled = true; // Valor predeterminado (opcional)
             }
-            _DBContext.SaveChanges();
-            return RedirectToAction("Index", "UserType");
+
+            return View(oUserTypeVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Detail(UserTypeVM oUserTypeVM)
+        {
+            if (ModelState.IsValid)
+            {
+                if (oUserTypeVM.oUserType.IdUserType == 0)
+                {
+                    // Crear nuevo tipo de usuario
+                    _DBContext.UserTypes.Add(oUserTypeVM.oUserType);
+                    TempData["SuccessMessage"] = "Tipo de usuario creado exitosamente.";
+                }
+                else
+                {
+                    // Editar tipo de usuario existente
+                    var existingUserType = _DBContext.UserTypes.Find(oUserTypeVM.oUserType.IdUserType);
+                    if (existingUserType != null)
+                    {
+                        existingUserType.Name = oUserTypeVM.oUserType.Name;
+                        existingUserType.ModificationDate = DateTime.Now; // Actualizar fecha de modificación
+                        existingUserType.Enabled = oUserTypeVM.oUserType.Enabled;
+
+                        _DBContext.UserTypes.Update(existingUserType);
+                        TempData["SuccessMessage"] = "Tipo de usuario actualizado exitosamente.";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Tipo de usuario no encontrado.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                _DBContext.SaveChanges();
+                return RedirectToAction("Index", "UserType");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Por favor, corrige los errores en el formulario.";
+                return View(oUserTypeVM);
+            }
         }
 
         // GET: UserTypeController/Create

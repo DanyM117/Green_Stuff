@@ -7,46 +7,48 @@
 
 <form asp-controller="Cart" asp-action="CheckoutConfirm" method="post">
     @Html.AntiForgeryToken()
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio Unitario</th>
-                <th>Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.CartItems)
-            {
+    <div class="card">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@item.Product.Name</td>
-                    <td>@item.Quantity</td>
-                    <td>@item.Product.UnitPrice.ToString("C")</td>
-                    <td>@(item.Product.UnitPrice * item.Quantity)</td>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-
-    <h3>Selecciona una tarjeta para el pago:</h3>
-    <div class="form-group">
-        @if (Model.PaymentCards.Any())
-        {
-            <select name="selectedCardId" class="form-control">
-                @foreach (var card in Model.PaymentCards)
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CartItems)
                 {
-                    <option value="@card.IdCard">@card.NameOnCard - @String.Format("**** **** **** {0}", card.Number.ToString().Substring(card.Number.ToString().Length - 4))</option>
+                    <tr>
+                        <td>@item.Product.Name</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Product.UnitPrice.ToString("C")</td>
+                        <td>@(item.Product.UnitPrice * item.Quantity)</td>
+                    </tr>
                 }
-            </select>
-        }
-        else
-        {
-            <p>No tienes tarjetas guardadas. <a asp-controller="Account" asp-action="AddCard">Agregar una tarjeta</a></p>
-        }
-    </div>
+            </tbody>
+        </table>
 
-    <div class="text-end">
-        <button type="submit" class="btn btn-primary">Confirmar y Pagar</button>
+        <h3>Selecciona una tarjeta para el pago:</h3>
+        <div class="form-group">
+            @if (Model.PaymentCards.Any())
+            {
+                <select name="selectedCardId" class="form-control">
+                    @foreach (var card in Model.PaymentCards)
+                    {
+                        <option value="@card.IdCard">@card.NameOnCard - @String.Format("**** **** **** {0}", card.Number.ToString().Substring(card.Number.ToString().Length - 4))</option>
+                    }
+                </select>
+            }
+            else
+            {
+                <p>No tienes tarjetas guardadas. <a asp-controller="Account" asp-action="AddCard">Agregar una tarjeta</a></p>
+            }
+        </div>
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">Confirmar y Pagar</button>
+        </div>
     </div>
 </form>

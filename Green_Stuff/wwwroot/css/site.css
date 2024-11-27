@@ -16,7 +16,24 @@ html {
   position: relative;
   min-height: 100%;
 }
-
+header nav div div ul li {
+    font-size: 24px;
+}
 body {
-  margin-bottom: 60px;
+    color: white;
+    margin-bottom: 60px;
+    /* Ruta absoluta desde la raíz del sitio */
+    background-image: url('../Resources/Images/Background/background.jpg');
+    background-size: cover; /* Ajusta la imagen para cubrir toda la pantalla */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-position: center center; /* Centra la imagen */
+    background-attachment: fixed; /* Opcional: hace que el fondo no se desplace al hacer scroll */
+    /* Opcional: Añadir un color de respaldo por si la imagen no carga */
+    background-color: #f0f0f0;
+    /* Opcional: Añadir un filtro de opacidad si deseas un efecto de superposición */
+    /* background: rgba(255, 255, 255, 0.5); */
+}
+
+body div.row, body table, body form, body div.card-header{
+    color: black;
 }

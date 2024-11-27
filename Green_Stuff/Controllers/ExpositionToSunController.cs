@@ -26,25 +26,66 @@ namespace Green_Stuff.Controllers
             {
                 oSun = new ExpositionToSun()
             };
+
             if (IdSun != 0)
             {
+                // Editar exposición al sol existente
                 oSunVM.oSun = _DBContext.ExpositionToSuns.Find(IdSun);
-            }
-            return View(oSunVM);
-        }
-        [HttpPost]
-        public ActionResult Detail(ExpositionToSunVM oSunVM)
-        {
-            if (oSunVM.oSun.IdSun == 0)
-            {
-                _DBContext.ExpositionToSuns.Add(oSunVM.oSun);
+                if (oSunVM.oSun == null)
+                {
+                    TempData["ErrorMessage"] = "Exposición al sol no encontrada.";
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
-                _DBContext.ExpositionToSuns.Update(oSunVM.oSun);
+                // Crear nueva exposición al sol: asignar la fecha actual
+                oSunVM.oSun.ModificationDate = DateTime.Now;
+                oSunVM.oSun.Enabled = true; // Valor predeterminado (opcional)
             }
-            _DBContext.SaveChanges();
-            return RedirectToAction("Index", "ExpositionToSun");
+
+            return View(oSunVM);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Detail(ExpositionToSunVM oSunVM)
+        {
+            if (ModelState.IsValid)
+            {
+                if (oSunVM.oSun.IdSun == 0)
+                {
+                    // Crear nueva exposición al sol
+                    _DBContext.ExpositionToSuns.Add(oSunVM.oSun);
+                    TempData["SuccessMessage"] = "Exposición al sol creada exitosamente.";
+                }
+                else
+                {
+                    // Editar exposición al sol existente
+                    var existingSun = _DBContext.ExpositionToSuns.Find(oSunVM.oSun.IdSun);
+                    if (existingSun != null)
+                    {
+                        existingSun.Name = oSunVM.oSun.Name;
+                        existingSun.Description = oSunVM.oSun.Description;
+                        existingSun.Enabled = oSunVM.oSun.Enabled;
+                        existingSun.ModificationDate = DateTime.Now; // Actualizar fecha de modificación
+
+                        _DBContext.ExpositionToSuns.Update(existingSun);
+                        TempData["SuccessMessage"] = "Exposición al sol actualizada exitosamente.";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Exposición al sol no encontrada.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                _DBContext.SaveChanges();
+                return RedirectToAction("Index", "ExpositionToSun");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Por favor, corrige los errores en el formulario.";
+                return View(oSunVM);
+            }
         }
 
         // GET: ExpositionToSunController/Create

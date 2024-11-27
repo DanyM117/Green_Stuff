@@ -27,25 +27,66 @@ namespace Green_Stuff.Controllers
             {
                 oWater = new WaterDemmand()
             };
+
             if (IdWater != 0)
             {
+                // Editar demanda de agua existente
                 oWaterVM.oWater = _DBContext.WaterDemmands.Find(IdWater);
-            }
-            return View(oWaterVM);
-        }
-        [HttpPost]
-        public ActionResult Detail(WaterDemmandVM oWaterWM)
-        {
-            if (oWaterWM.oWater.IdWater == 0)
-            {
-                _DBContext.WaterDemmands.Add(oWaterWM.oWater);
+                if (oWaterVM.oWater == null)
+                {
+                    TempData["ErrorMessage"] = "Demanda de agua no encontrada.";
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
-                _DBContext.WaterDemmands.Update(oWaterWM.oWater);
+                // Crear nueva demanda de agua: asignar la fecha actual
+                oWaterVM.oWater.ModificationDate = DateTime.Now;
+                oWaterVM.oWater.Enabled = true; // Valor predeterminado (opcional)
             }
-            _DBContext.SaveChanges();
-            return RedirectToAction("Index", "WaterDemmand");
+
+            return View(oWaterVM);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Detail(WaterDemmandVM oWaterVM)
+        {
+            if (ModelState.IsValid)
+            {
+                if (oWaterVM.oWater.IdWater == 0)
+                {
+                    // Crear nueva demanda de agua
+                    _DBContext.WaterDemmands.Add(oWaterVM.oWater);
+                    TempData["SuccessMessage"] = "Demanda de agua creada exitosamente.";
+                }
+                else
+                {
+                    // Editar demanda de agua existente
+                    var existingWater = _DBContext.WaterDemmands.Find(oWaterVM.oWater.IdWater);
+                    if (existingWater != null)
+                    {
+                        existingWater.Name = oWaterVM.oWater.Name;
+                        existingWater.Description = oWaterVM.oWater.Description;
+                        existingWater.Enabled = oWaterVM.oWater.Enabled;
+                        existingWater.ModificationDate = DateTime.Now; // Actualizar fecha de modificación
+
+                        _DBContext.WaterDemmands.Update(existingWater);
+                        TempData["SuccessMessage"] = "Demanda de agua actualizada exitosamente.";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Demanda de agua no encontrada.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                _DBContext.SaveChanges();
+                return RedirectToAction("Index", "WaterDemmand");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Por favor, corrige los errores en el formulario.";
+                return View(oWaterVM);
+            }
         }
         // GET: WaterDemmandController/Create
         public ActionResult Create()

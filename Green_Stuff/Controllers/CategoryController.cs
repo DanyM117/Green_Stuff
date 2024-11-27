@@ -26,26 +26,61 @@ namespace Green_Stuff.Controllers
             {
                 oCategory = new Category()
             };
+
             if (IdCategory != 0)
             {
+                // Editar categoría existente
                 oCatVM.oCategory = _DBContext.Categories.Find(IdCategory);
             }
+            else
+            {
+                // Crear nueva categoría: asignar la fecha actual
+                oCatVM.oCategory.ModificationDate = DateTime.Now;
+                oCatVM.oCategory.Enabled = true; // Valor predeterminado (opcional)
+            }
+
             return View(oCatVM);
         }
 
         [HttpPost]
         public ActionResult Detail(CategoryVM oCatVM)
         {
-            if (oCatVM.oCategory.IdCategory == 0)
+            if (ModelState.IsValid)
             {
-                _DBContext.Categories.Add(oCatVM.oCategory);
+                if (oCatVM.oCategory.IdCategory == 0)
+                {
+                    // Crear nueva categoría: ModificationDate ya asignada en GET
+                    _DBContext.Categories.Add(oCatVM.oCategory);
+                    TempData["SuccessMessage"] = "Categoría creada exitosamente.";
+                }
+                else
+                {
+                    // Editar categoría existente: actualizar ModificationDate
+                    var existingCategory = _DBContext.Categories.Find(oCatVM.oCategory.IdCategory);
+                    if (existingCategory != null)
+                    {
+                        existingCategory.Name = oCatVM.oCategory.Name;
+                        existingCategory.Description = oCatVM.oCategory.Description;
+                        existingCategory.Enabled = oCatVM.oCategory.Enabled;
+                        existingCategory.ModificationDate = DateTime.Now; // Actualizar fecha de modificación
+
+                        _DBContext.Categories.Update(existingCategory);
+                        TempData["SuccessMessage"] = "Categoría actualizada exitosamente.";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Categoría no encontrada.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                _DBContext.SaveChanges();
+                return RedirectToAction("Index", "Category");
             }
             else
             {
-                _DBContext.Categories.Update(oCatVM.oCategory);
+                TempData["ErrorMessage"] = "Por favor, corrige los errores en el formulario.";
+                return View(oCatVM);
             }
-            _DBContext.SaveChanges();
-            return RedirectToAction("Index", "Category");
         }
         // GET: CategoryController/Create
         public ActionResult Create()

@@ -22,32 +22,73 @@ namespace Green_Stuff.Controllers
         }
         [HttpGet]
         // GET: SizesController/Details/5
-        public ActionResult Detail(int IdSize)
+        public ActionResult Detail(int IdSize = 0)
         {
             SizesVM oSizesVM = new SizesVM()
             {
                 oSize = new Size()
             };
-            if(IdSize != 0)
+
+            if (IdSize != 0)
             {
+                // Editar tamaño existente
                 oSizesVM.oSize = _DBContext.Sizes.Find(IdSize);
+                if (oSizesVM.oSize == null)
+                {
+                    TempData["ErrorMessage"] = "Tamaño no encontrado.";
+                    return RedirectToAction("Index");
+                }
             }
+            else
+            {
+                // Crear nuevo tamaño: asignar la fecha actual
+                oSizesVM.oSize.ModificationDate = DateTime.Now;
+                oSizesVM.oSize.Enabled = true; // Valor predeterminado (opcional)
+            }
+
             return View(oSizesVM);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Detail(SizesVM oSizeVM)
         {
-            if (oSizeVM.oSize.IdSize == 0)
+            if (ModelState.IsValid)
             {
-                _DBContext.Sizes.Add(oSizeVM.oSize);
+                if (oSizeVM.oSize.IdSize == 0)
+                {
+                    // Crear nuevo tamaño
+                    _DBContext.Sizes.Add(oSizeVM.oSize);
+                    TempData["SuccessMessage"] = "Tamaño creado exitosamente.";
+                }
+                else
+                {
+                    // Editar tamaño existente
+                    var existingSize = _DBContext.Sizes.Find(oSizeVM.oSize.IdSize);
+                    if (existingSize != null)
+                    {
+                        existingSize.Name = oSizeVM.oSize.Name;
+                        existingSize.Description = oSizeVM.oSize.Description;
+                        existingSize.Enabled = oSizeVM.oSize.Enabled;
+                        existingSize.ModificationDate = DateTime.Now; // Actualizar fecha de modificación
+
+                        _DBContext.Sizes.Update(existingSize);
+                        TempData["SuccessMessage"] = "Tamaño actualizado exitosamente.";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Tamaño no encontrado.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                _DBContext.SaveChanges();
+                return RedirectToAction("Index", "Sizes");
             }
             else
             {
-                _DBContext.Sizes.Update(oSizeVM.oSize);
+                TempData["ErrorMessage"] = "Por favor, corrige los errores en el formulario.";
+                return View(oSizeVM);
             }
-            _DBContext.SaveChanges();
-            return RedirectToAction("Index", "Sizes");
         }
         // GET: SizesController/Create
         public ActionResult Create()

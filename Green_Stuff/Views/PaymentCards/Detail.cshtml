@@ -11,42 +11,43 @@ else
 {
     <h1>Editar</h1>
 }
+<div class="card">
+    <div class="row">
+        <div class="col-4">
+            <form asp-action="Detail" asp-controller="PaymentCards" method="post">
+                <input type="hidden" asp-for="oPaymentCards.IdCard" />
+                <div class="mb-2">
+                    <label class="fore-label" asp-for="oPaymentCards.Iduser">Usuario</label>
+                    <select class="form-select form-select-sm" asp-for="oPaymentCards.Iduser" asp-items="@Model.oPaymentUsersList">
+                        <option selected disabled>-- SLECT --</option>
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="fore-label" asp-for="oPaymentCards.Number">Numero</label>
+                    <input class="form-control form-control-sm" asp-for="oPaymentCards.Number" type="text" />
+                </div>
+                <div class="mb-2">
+                    <label class="fore-label" asp-for="oPaymentCards.NameOnCard">Nombre en tarjeta</label>
+                    <input class="form-control form-control-sm" asp-for="oPaymentCards.NameOnCard" type="text" />
+                </div>
+                <div class="mb-2">
+                    <label class="fore-label" asp-for="oPaymentCards.Cvv">CVV</label>
+                    <input class="form-control form-control-sm" asp-for="oPaymentCards.Cvv" type="text" />
+                </div>
 
-<div class="row">
-    <div class="col-4">
-        <form asp-action="Detail" asp-controller="PaymentCards" method="post">
-            <input type="hidden" asp-for="oPaymentCards.IdCard" />
-            <div class="mb-2">
-                <label class="fore-label" asp-for="oPaymentCards.Iduser">Usuario</label>
-                <select class="form-select form-select-sm" asp-for="oPaymentCards.Iduser" asp-items="@Model.oPaymentUsersList">
-                    <option selected disabled>-- SLECT --</option>
-                </select>
-            </div>
-            <div class="mb-2">
-                <label class="fore-label" asp-for="oPaymentCards.Number">Numero</label>
-                <input class="form-control form-control-sm" asp-for="oPaymentCards.Number" type="text" />
-            </div>
-            <div class="mb-2">
-                <label class="fore-label" asp-for="oPaymentCards.NameOnCard">Nombre en tarjeta</label>
-                <input class="form-control form-control-sm" asp-for="oPaymentCards.NameOnCard" type="text" />
-            </div>
-            <div class="mb-2">
-                <label class="fore-label" asp-for="oPaymentCards.Cvv">CVV</label>
-                <input class="form-control form-control-sm" asp-for="oPaymentCards.Cvv" type="text" />
-            </div>
+                <div class="mb-3">
+                    @if (Model.oPaymentCards.IdCard == 0)
+                    {
+                        <button class="btn btn-primary btn-sm w-25" type="submit">Crear</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary btn-sm w-25" type="submit">Actualizar</button>
+                    }
+                    <a class="btn btn-dark btn-sm" asp-action="Index" asp-controller="PaymentCards">Volver</a>
+                </div>
+            </form>
+        </div>
 
-            <div class="mb-3">
-                @if (Model.oPaymentCards.IdCard == 0)
-                {
-                    <button class="btn btn-primary btn-sm w-25" type="submit">Crear</button>
-                }
-                else
-                {
-                    <button class="btn btn-primary btn-sm w-25" type="submit">Actualizar</button>
-                }
-                <a class="btn btn-dark btn-sm" asp-action="Index" asp-controller="PaymentCards">Volver</a>
-            </div>
-        </form>
     </div>
-
 </div>

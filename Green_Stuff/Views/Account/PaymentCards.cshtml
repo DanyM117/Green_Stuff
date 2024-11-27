@@ -4,29 +4,31 @@
 }
 
 <h1>Mis Tarjetas de Pago</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nombre en la Tarjeta</th>
-            <th>Número</th>
-            <th>CVV</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var card in Model)
-        {
+<div class="card">
+    <table class="table">
+        <thead>
             <tr>
-                <td>@card.NameOnCard</td>
-                <td>@card.Number</td>
-                <td>@card.Cvv</td>
-                <td>
-                    <!-- Agrega enlaces para editar y eliminar -->
-                </td>
+                <th>Nombre en la Tarjeta</th>
+                <th>Número</th>
+                <th>CVV</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var card in Model)
+            {
+                <tr>
+                    <td>@card.NameOnCard</td>
+                    <td>@card.Number</td>
+                    <td>@card.Cvv</td>
+                    <td>
+                        <!-- Agrega enlaces para editar y eliminar -->
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
 
 <a asp-action="AddCard" class="btn btn-success">Agregar Nueva Tarjeta</a>

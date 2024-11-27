@@ -1,65 +1,100 @@
 ﻿@model Green_Stuff.Models.ViewModels.AddressesVM
 @{
-    ViewData["Title"] = "Detail";
+    if (Model.oAddress.IdAdd == 0)
+    {
+        ViewData["Title"] = "Crear Dirección";
+    }
+    else
+    {
+        ViewData["Title"] = "Editar Dirección";
+    }
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@if (Model.oAddress.IdAdd == 0)
-{
-    <h1>Crear Direccion</h1>
-}
-else
-{
-    <h1>Editar</h1>
-}
 
-<div class="row">
-    <div class="col-4">
-        <form asp-action="Detail" asp-controller="Addresses" method="post">
-            <input type="hidden" asp-for="oAddress.IdAdd" />
+<h1>@ViewData["Title"]</h1>
+
+<div class="card">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+
+            <form asp-action="Detail" asp-controller="Addresses" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="oAddress.IdAdd" />
+
                 @if (Model.oAddress.IdAdd == 0)
                 {
-                <div class="mb-2">
-                    <label class="fore-label" asp-for="oAddress.Iduser">Username</label>
-                    <select class="form-select form-select-sm" asp-for="oAddress.Iduser" asp-items="@Model.oUserList">
-                        <option selected disabled>-- SLECT --</option>
-                    </select>
-                </div>
-                }else
-                {
-                <div class="mb-2">
-                    <label class="fore-label" asp-for="oAddress.Iduser">Username</label>
-                    <select class="form-select form-select-sm" asp-for="oAddress.Iduser" asp-items="@Model.oUserList" disabled>
-                        <option selected disabled>-- SLECT --</option>
-                    </select>
-                </div>
-                }
-                <div class="mb-2">
-                    <label class="fore-label" asp-for="oAddress.Name">Direccion</label>
-                    <input class="form-control form-control-sm" asp-for="oAddress.Name" type="text" />
-                </div>
-                <div class="mb-2">
-                    <label class="fore-label" asp-for="oAddress.ModificationDate">Fecha modificación</label>
-                    <input class="form-control form-control-sm" asp-for="oAddress.ModificationDate" type="text" />
-                </div>
-                <div class="mb-2">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" asp-for="oAddress.Enabled">
-                        <label class="form-check-label" for="flexSwitchCheckChecked" asp-for="oAddress.Enabled">Habilitado</label>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="oAddress.Iduser">Username</label>
+                        <select class="form-select form-select-sm" asp-for="oAddress.Iduser" asp-items="@Model.oUserList">
+                            <option selected disabled>-- SELECT --</option>
+                        </select>
+                        <span asp-validation-for="oAddress.Iduser" class="text-danger"></span>
                     </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="oAddress.Iduser">Username</label>
+                        <select class="form-select form-select-sm" asp-for="oAddress.Iduser" asp-items="@Model.oUserList" disabled>
+                            <option selected disabled>-- SELECT --</option>
+                        </select>
+                        <!-- Campo oculto para mantener el valor de Iduser al editar -->
+                        <input type="hidden" asp-for="oAddress.Iduser" />
+                        <span asp-validation-for="oAddress.Iduser" class="text-danger"></span>
+                    </div>
+                }
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="oAddress.Name"></label>
+                    <input class="form-control form-control-sm" asp-for="oAddress.Name" type="text" />
+                    <span asp-validation-for="oAddress.Name" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label" asp-for="oAddress.ModificationDate"></label>
+                    <input class="form-control form-control-sm" asp-for="oAddress.ModificationDate" type="date" readonly />
+                    <span asp-validation-for="oAddress.ModificationDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" asp-for="oAddress.Enabled" id="@($"EnabledSwitch_{Model.oAddress.IdAdd}")">
+                        <label class="form-check-label" for="@($"EnabledSwitch_{Model.oAddress.IdAdd}")">Habilitado</label>
+                        <span asp-validation-for="oAddress.Enabled" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
                     @if (Model.oAddress.IdAdd == 0)
                     {
-                        <button class="btn btn-primary btn-sm w-25" type="submit">Crear</button>
+                        <button class="btn btn-primary btn-sm" type="submit">Crear</button>
                     }
                     else
                     {
-                        <button class="btn btn-primary btn-sm w-25" type="submit">Actualizar</button>
+                        <button class="btn btn-primary btn-sm" type="submit">Actualizar</button>
                     }
                     <a class="btn btn-dark btn-sm" asp-action="Index" asp-controller="Addresses">Volver</a>
                 </div>
-        </form>
+            </form>
+        </div>
     </div>
-
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
